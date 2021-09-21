@@ -1,0 +1,210 @@
+// Write data in excel
+
+package com.crm.qa.datasource;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class writeexceldata {
+
+	public static void main(String[] args) throws IOException {
+		
+		
+		  
+//String C1[]  = new String[5];
+//C1[0]= "Mayank";
+//C1[1]= "Sumit";
+//C1[2]= "Rajat";
+//C1[3]= "Aman";
+//C1[4]= "naveen";
+
+		ArrayList<String> Arr = new ArrayList<String>();
+			Arr.add("Mayank");
+			Arr.add("Sumit");
+			Arr.add("Rajat");
+			Arr.add("Aman");
+			Arr.add("naveen");
+			Arr.add("Nanneet");
+			Arr.remove(2);
+		
+
+
+
+XSSFWorkbook workbook = new XSSFWorkbook();
+XSSFSheet spreadsheet = workbook.createSheet("Sheet2");
+Row r0 = spreadsheet.createRow(0);
+//Cell c= r0.createCell(0);	
+//Cell c1= r0.createCell(1);
+for(int i=0;i<Arr.size();i++) {
+Cell c= r0.createCell(i);
+c.setCellValue(Arr.get(i));
+}
+//c.setCellValue("Cell1");
+//c1.setCellValue("Cell2");
+
+File file = new File("C:\\Users\\mayank.saxena\\Desktop\\Mayank.xlsx");
+
+FileOutputStream fos = new FileOutputStream(file);
+workbook.write(fos);
+fos.close();
+workbook.close();
+System.out.println("file is written succesfully");
+		
+	}
+
+}
+
+
+
+
+
+//Read Data from excel sheet
+package com.crm.qa.datasource;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+
+
+public class Selenium_Session5 {
+	
+static	String [][]data;
+static int row;
+static int column;
+
+	public static void main(String[] args) throws BiffException, IOException {
+		// TODO Auto-generated method stub
+try{
+		//readdata();
+	
+	  System.setProperty("webdriver.chrome.driver", "C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\chromedriver.exe");
+	  WebDriver driver = new ChromeDriver();
+	  driver.manage().window().maximize();
+	  driver.get("https://accounts.google.com/");
+	  driver.findElement(By.xpath(".//span[contains(text(),'Create account')]")).click();
+	  driver.findElement(By.xpath(".//span[contains(text(),'For myself')]")).click();
+	  
+	  String[][] data1 = readdata();
+	  
+	  for(int p =0; p<3;p++) {
+		  
+		  for(int q =0; q<5;q++)   {
+	 
+	  driver.findElement(By.xpath("//input[@id='firstName']")).sendKeys(data1[p][q]);
+	  driver.findElement(By.xpath("//input[@id='lastName']")).sendKeys(data1[p][q]);
+	  driver.findElement(By.xpath("//input[@id='username']")).sendKeys(data1[p][q]);
+	  driver.findElement(By.xpath("//input[@name='Passwd']")).sendKeys(data1[p][q]);
+	  driver.findElement(By.xpath("//input[@name='ConfirmPasswd']")).sendKeys(data1[p][q]);
+	  driver.findElement(By.xpath("//span[contains(text(),'Next')]")).click();
+	  }
+	  }
+		}
+		catch(Exception e){
+			System.out.println(e);
+			
+		}
+		
+		
+		
+	}
+
+	
+	
+	public static String[][] readdata() throws BiffException, IOException{
+		
+		File f = new File("C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\src\\main\\java\\FREECRMDATA.xls");
+		Workbook wb = Workbook.getWorkbook(f);
+		Sheet sheet = wb.getSheet("data_driven");
+		 row = sheet.getRows();
+		 column = sheet.getColumns();
+		
+	    data = new String[13][13];
+		
+		for(int i=1;i<row;i++) {
+			for(int j=0;j<column;j++) {
+				
+				data[i-1][j] = sheet.getCell(j, i).getContents();
+				
+			}
+			
+			
+		}return data;
+	
+		
+		
+	}
+	
+}
+
+
+
+
+
+//Read Config file
+
+package com.crm.qa.datasource;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+public class Readconfig {
+
+	public static void main(String[] args) throws IOException {
+
+		
+		Properties prop = new Properties();
+		FileReader  f1 = new FileReader("C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\src\\main\\java\\com\\crm\\qa\\datasource\\config.properties");
+		prop.load(f1);
+//		
+//		System.setProperty("webdriver.chrome.driver", "C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\chromedriver.exe");
+//		  WebDriver driver = new ChromeDriver();
+       
+        
+        if(prop.getProperty("browser").equalsIgnoreCase("chrome")) {
+        	
+        	  System.setProperty("webdriver.chrome.driver", "C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\chromedriver.exe");
+    		  WebDriver driver = new ChromeDriver();
+    		  driver.get(prop.getProperty("url"));
+  
+        	
+        }
+        
+        if (prop.getProperty("browser").equalsIgnoreCase("firefox")) {
+        	
+        	System.setProperty("webdriver.gecko.driver", "C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\geckodriver.exe");
+			WebDriver driver = new FirefoxDriver();
+   		  driver.get(prop.getProperty("url"));
+ 
+        }
+        
+if (prop.getProperty("browser").equalsIgnoreCase("ie")) {
+        	
+        	System.setProperty("webdriver.gecko.driver", "C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\geckodriver.exe");
+			WebDriver driver = new InternetExplorerDriver();
+   		  driver.get(prop.getProperty("url"));
+ 
+        }
+	}
+
+}
+

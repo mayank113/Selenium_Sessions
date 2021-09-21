@@ -1,0 +1,70 @@
+package com.crm.qa.datasource;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class DatabaseConnection {
+
+	static Connection Con = null;
+	static Statement Stat= null;
+	static ResultSet result = null;
+	
+	
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+
+		try {
+			
+			Class.forName("org.postgresql.Driver");
+			Con =DriverManager.getConnection("jdbc:postgresql://13.233.18.80:5432/accountdb", "postgres", "mi@a2oppo@f9pro");
+			Stat =Con.createStatement();
+		   //String Insert = "INSERT INTO abt_config (config_type, config_code, config_name, config_value, is_active, is_encrypted, is_deleted, created_by, created_date, updated_by,updated_date, pgm_id, version) VALUES ('Mayank',0004,'Mayank123',100,'Y','N','N','Null','2021-05-11 14:30:02.802','Null','2021-05-11 14:30:02.802','Null',1)";
+		   String select  = "select * from abt_config";
+//		   String delete  = "delete from abt_config where config_code = '4'";
+//		   String SP = "select * from fn_test_log()";
+		   
+		   //Stat.executeQuery(SP);
+		   //Stat.executeQuery(query2);
+			
+		   result= Stat.executeQuery(select);
+		   
+//		 System.out.println(result);
+//		
+//			while(result.next()) {
+//				
+//				System.out.println(result.getString(1) +"|" + result.getString(2) +"|" +  result.getString(7)) ;
+//				
+//			}
+			
+			System.setProperty("webdriver.chrome.driver","C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\chromedriver.exe");
+			WebDriver driver = new ChromeDriver();
+			driver.manage().window().maximize();
+			driver.get("https://accounts.google.com/");
+			driver.findElement(By.xpath("//span[contains(.,'Create account')]")).click();
+			driver.findElement(By.xpath("//span[contains(.,'For myself')]")).click();
+			
+			while(result.next()) {
+			driver.findElement(By.xpath("//input[@id='firstName']")).sendKeys(result.getString(1));
+			}
+		}   
+		
+	
+		
+		
+		catch (SQLException e) {
+			System.out.println(e);
+		
+	}
+		
+		finally {
+			Con.close();
+		}
+
+}
+}

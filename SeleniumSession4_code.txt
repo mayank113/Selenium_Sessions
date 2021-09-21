@@ -1,0 +1,122 @@
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class Selenium_Session6 {
+
+	public static void main(String[] args) {
+
+		
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\mayank.saxena\\eclipse-workspace\\SelfLearning\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();	
+		driver.manage().window().maximize();
+		//Mouser hover
+//		
+//		driver.get("https://www.amazon.in/");
+//		Actions Act = new Actions(driver);
+//		Act.moveToElement(driver.findElement(By.xpath("//span[@class='nav-line-2']//span[@class='icp-nav-flag icp-nav-flag-in']"))).build().perform();
+//			
+		//Static web table
+		
+  
+//		driver.get("https://demoqa.com/webtables");
+//		List<WebElement> l1= driver.findElements(By.xpath("//div[@class='rt-tbody']//div//div//div"));
+//		for(int i=0;i<l1.size();i++) {
+//			
+//			if(!(l1.get(i).getText().equals(""))) {
+//			
+//			System.out.println(l1.get(i).getText());
+//			
+//			}
+//		}
+		
+	//dynamic Web table
+		
+		
+		//driver.get("https://demoqa.com/frames");
+//		List<WebElement> l1= driver.findElements(By.xpath("//div[@class='rt-tbody']//div//div//div"));
+//		
+//		String Name = "Alden";
+//		
+//		
+//		for(int i=0;i<l1.size();i++) {
+//			
+//		
+//			if(l1.get(i).getText().equals(Name)) {
+//				
+//				driver.findElement(By.xpath("//span[@id='delete-record-3']")).click();
+//				
+//			}
+//			
+//			if(l1.get(i).getText().equals(Name)){
+//				
+//				driver.findElement(By.xpath("//span[@id='delete-record-2']")).click();	
+//			}
+//			
+//			else {
+//				
+//				driver.findElement(By.xpath("//span[@id='delete-record-1']")).click();
+//			}
+//		
+//			}
+		
+		//Switching frames
+		
+//		driver.switchTo().frame("frame2");
+//		String Text = driver.findElement(By.xpath("//h1[@id='sampleHeading']")).getText();
+//		System.out.println(Text);
+//		driver.switchTo().defaultContent();
+//		driver.findElement(By.xpath("//img[@src='/images/Toolsqa.jpg']")).click();
+		
+		
+		//Switching tabs
+		
+		driver.get("https://demoqa.com/browser-windows");
+		driver.findElement(By.xpath("//button[@id='tabButton']")).click();
+//		String parentwindow = driver.getWindowHandle();
+//		System.out.println(parentwindow);
+		
+		Set<String> window =driver.getWindowHandles();
+
+		window.add("Mayank");
+		window.add("Suraj");
+		//window.add("Suraj");
+		
+		Iterator<String> IT =window.iterator();
+		
+		
+		String Parent1 =  null;
+		String Child =  null;
+		String Name1 =  null;
+		String Name2 =  null;
+		
+		
+
+		
+		while(IT.hasNext()){
+		
+		Parent1 =IT.next();
+		Child =IT.next();
+		Name1 =IT.next();
+		Name2 =IT.next();
+		
+		}
+		
+//		driver.switchTo().window(Child);
+		System.out.println(Name1);
+//		driver.switchTo().window(Parent1);
+//		//driver.findElement(By.xpath("//img[@src='/images/Toolsqa.jpg']")).click();
+//		driver.close();
+		
+		
+		}
+		
+	}
+
